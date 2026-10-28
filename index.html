@@ -199,7 +199,7 @@ input{font:inherit}
 </head>
 <body>
 <div class="topbar">
-  <div><h1>QR ordering + loyalty: live demo</h1><p>Left: what the customer sees after scanning the table QR. Right: the café's POS, where orders land automatically.</p></div>
+  <div><h1>QR ordering + loyalty: live demo</h1><p>Left: what the customer sees after scanning the table QR. Right: the café's Petpooja POS, where QR orders land alongside counter and aggregator orders.</p></div>
   <button class="reset" data-action="reset">Reset demo</button>
 </div>
 <div class="stage">
@@ -212,7 +212,7 @@ input{font:inherit}
     </div>
   </div>
   <div style="flex:0 1 560px;min-width:0">
-    <div class="col-label">Café POS (counter screen)</div>
+    <div class="col-label">Petpooja POS (simulated, not the real Petpooja screen)</div>
     <div class="pos" id="pos"></div>
   </div>
 </div>
@@ -476,7 +476,7 @@ function pos(){
   const active = S.orders.filter(o => o.status !== "completed");
   const done = S.orders.filter(o => o.status === "completed").length;
   const next = { new:["Accept","preparing"], preparing:["Mark ready","ready"], ready:["Served","completed"] };
-  return `<div class="pos-head"><div><b>${CAFE.name} · Counter 1</b><small>POS · ${new Date().toDateString()}</small></div><span class="sync">Online orders synced</span></div>
+  return `<div class="pos-head"><div><b>${CAFE.name} · Counter 1</b><small>Petpooja POS · ${new Date().toDateString()}</small></div><span class="sync">QR orders → Petpooja</span></div>
     <div class="pos-tabs"><span class="on">Online / QR (${active.length})</span><span>Dine-in</span><span>Takeaway</span><span>Completed (${done})</span></div>
     <div class="tickets">${active.length ? active.slice().reverse().map(o => `<div class="ticket ${o.fresh ? "new" : ""}">
       <div class="t-top"><div><b>#${o.no} · ${o.table}</b><small>QR order · ${o.time}</small></div><span class="badge b-${o.status}">${o.status}</span></div>
@@ -484,7 +484,7 @@ function pos(){
       <div class="t-meta"><span>Paid online · ${inr(o.total)}</span><span>${o.phone ? `★ ${o.phone} · +${o.pts}` : "Guest"}</span></div>
       ${next[o.status] ? `<button class="t-btn ${o.status === "new" ? "go" : ""}" data-action="pos" data-no="${o.no}" data-to="${next[o.status][1]}">${next[o.status][0]}</button>` : ""}
     </div>`).join("") : `<div class="pos-empty">No open online orders.<br>Place one from the phone →</div>`}</div>
-    <div class="pos-foot"><span>Orders print a KOT and appear in today's sales automatically</span><span>${S.orders.length} today</span></div>
+    <div class="pos-foot"><span>Pushed into Petpooja: KOT prints and the order counts in today's sales</span><span>${S.orders.length} today</span></div>
     ${S.posToast ? `<div class="pos-toast">${S.posToast}</div>` : ""}`;
 }
 
